@@ -1,6 +1,6 @@
 """
 SIGRHE · paramètres Django.
-Toute la configuration sensible passe par des variables d'environnement (fichier .env, voir .env.example).
+Toute la configuration sensible passe par des variables d'environnement (fichier .env sur le serveur, non versionné).
 """
 import os
 from pathlib import Path
@@ -34,7 +34,7 @@ if _env_file.exists():
 DEBUG = env_bool('DJANGO_DEBUG', False)
 SECRET_KEY = env('DJANGO_SECRET_KEY') or ('dev-insecure-key-change-me' if DEBUG else None)
 if not SECRET_KEY:
-    raise RuntimeError('DJANGO_SECRET_KEY doit être défini en production (voir .env.example).')
+    raise RuntimeError('DJANGO_SECRET_KEY doit être défini en production (fichier .env).')
 
 ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
 CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS', '')

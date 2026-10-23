@@ -1,5 +1,5 @@
 # SIGRHE · déploiement complet : PostgreSQL + application + Nginx (HTTPS)
-# Démarrage : cp .env.example .env  (puis compléter)  &&  docker compose up -d --build
+# Démarrage : créer le fichier .env à la racine (variables non versionnées, voir README_DEPLOIEMENT.md) puis docker compose up -d --build
 services:
   db:
     image: postgres:16-alpine

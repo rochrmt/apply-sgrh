@@ -55,11 +55,12 @@ Prérequis : serveur Linux (Ubuntu 22.04/24.04 ou équivalent), 2 vCPU, 4 Go de 
 # 1. Copier le dossier sur le serveur, par exemple dans /opt/sigrhe
 cd /opt/sigrhe
 
-# 2. Configuration
-cp .env.example .env
+# 2. Configuration : créer le fichier .env à la racine (non versionné)
 python3 -c "import secrets; print(secrets.token_urlsafe(50))"   # → DJANGO_SECRET_KEY
 nano .env      # renseigner au minimum : DJANGO_SECRET_KEY, DJANGO_ALLOWED_HOSTS,
-               # DJANGO_CSRF_TRUSTED_ORIGINS, POSTGRES_PASSWORD
+               # DJANGO_CSRF_TRUSTED_ORIGINS, POSTGRES_PASSWORD,
+               # TIME_ZONE, EMAIL_*, LOGIN_*, SESSION_SECONDS
+               # (et SIGRHE_PORT / SIGRHE_BIND pour l'exposition HTTP directe)
 
 # 3. Certificat HTTPS dans deploy/certs/ (fullchain.pem et privkey.pem)
 #    - certificat de l’autorité de l’État, ou
@@ -105,7 +106,7 @@ sudo -u postgres psql -c "CREATE USER sigrhe PASSWORD 'MOT_DE_PASSE';" -c "CREAT
 sudo useradd --system --home /opt/sigrhe sigrhe
 sudo cp -r . /opt/sigrhe && cd /opt/sigrhe
 python3 -m venv venv && venv/bin/pip install -r requirements.txt
-cp .env.example .env && nano .env      # DATABASE_URL=postgres://sigrhe:MOT_DE_PASSE@localhost:5432/sigrhe, MEDIA_ROOT=/opt/sigrhe/media …
+nano .env      # créer le fichier de configuration : DATABASE_URL=postgres://sigrhe:MOT_DE_PASSE@localhost:5432/sigrhe, MEDIA_ROOT=/opt/sigrhe/media …
 set -a; . ./.env; set +a
 venv/bin/python manage.py migrate
 venv/bin/python manage.py init_reference

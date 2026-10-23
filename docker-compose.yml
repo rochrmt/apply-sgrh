@@ -28,10 +28,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Application accessible en HTTP local sur http://localhost:8000 sans le proxy TLS
-    # (changer le port hôte via SIGRHE_PORT dans .env si 8000 est déjà pris)
+    # Application accessible en HTTP sur http://localhost:8000 sans le proxy TLS
+    # SIGRHE_BIND : adresse d'écoute (127.0.0.1 = local seul ; 0.0.0.0 = exposée)
+    # SIGRHE_PORT : port hôte si 8000 est déjà pris
     ports:
-      - "127.0.0.1:${SIGRHE_PORT:-8000}:8000"
+      - "${SIGRHE_BIND:-127.0.0.1}:${SIGRHE_PORT:-8000}:8000"
 
   # Proxy TLS (production) : démarrer avec « docker compose --profile https up -d »
   # après avoir déposé deploy/certs/fullchain.pem et deploy/certs/privkey.pem.

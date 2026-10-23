@@ -68,6 +68,14 @@ h1,h2,h3{text-wrap:balance;margin:0}
 body.has-cb .cb-fab{display:flex}
 body.cb-agt .cb-fab{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 body.cb-open .cb-fab{display:none!important}
+/* Petite bulle d'accueil de Sango, à côté du bouton flottant */
+.cb-teaser{position:fixed;right:calc(90px + env(safe-area-inset-right,0px));bottom:calc(32px + env(safe-area-inset-bottom,0px));z-index:56;max-width:250px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 15px;font-size:13.5px;line-height:1.45;box-shadow:0 10px 28px rgba(2,14,33,.22);cursor:pointer;animation:cbtease .45s ease both}
+.cb-teaser::after{content:"";position:absolute;right:-7px;bottom:20px;width:12px;height:12px;background:var(--surface);border-right:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.cb-teaser:hover{border-color:var(--accent-mid)}
+.cb-teaser.off{opacity:0;transform:translateY(8px);transition:.35s ease}
+@keyframes cbtease{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:none}}
+body.cb-agt .cb-teaser{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+body.cb-open .cb-teaser{display:none}
 .btn.cb-top{gap:6px;color:var(--accent);border-color:var(--accent-mid)}
 @media (max-width:1500px){.btn.cb-top span{display:none}}
 body.has-cb .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}

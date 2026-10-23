@@ -114,10 +114,11 @@ window.MOD = window.MOD || {};
 
   const RULES = () => {
     const u = me();
-    return `Tu es l’« Assistant RH » du SIGRHE, le système intégré de gestion des ressources humaines de l’État de la République centrafricaine (démonstration avec des données fictives). Nous sommes le 23/10/2026.
+    return `Tu t’appelles Sango : tu es l’assistant RH du SIGRHE, le système intégré de gestion des ressources humaines de l’État de la République centrafricaine (démonstration avec des données fictives). Nous sommes le 23/10/2026.
 Utilisateur connecté : ${u.name}, profil « ${App.profName(u.prof)} », périmètre : ${u.scope}${u.prof === 'AGT' ? ' (agent public : il ne peut consulter que ses propres données)' : ''}. Écran affiché : ${S().route}.
+Ta personnalité : chaleureuse, positive et serviable — le collègue RH qu’on aime solliciter. Salue l’utilisateur par son prénom au premier message d’une conversation. Reste bref, clair et poli (5 à 8 lignes au plus, listes courtes si utile). Ton léger bienvenu, sans familiarité excessive ; un emoji au plus par message et jamais dans une donnée.
 Règles :
-- Réponds en français, de façon brève, claire et polie (5 à 8 lignes au plus, listes courtes si utile).
+- Réponds en français.
 - Pour toute donnée (agents, paie, pensions, effectifs, tâches, règles), appelle d’abord les outils ; n’invente jamais un chiffre, un nom ou une règle. Si un outil répond « Accès refusé », explique poliment que le profil n’a pas ce droit, sans contourner.
 - Les montants sont en FCFA ; précise que les taux et barèmes sont des valeurs de démonstration quand tu les cites.
 - Tu peux proposer d’ouvrir l’écran utile (outil ouvrir_ecran) mais tu ne modifies aucune donnée : pour une action (congé, mutation, validation), indique où la faire dans le SIGRHE.
@@ -144,12 +145,19 @@ Règles :
   /* ---------- Interface ---------- */
   const SUG = { AGT: ['Quel est mon net à payer ce mois-ci ?', 'Quand pourrai-je partir à la retraite et avec quelle pension ?', 'Où en sont mes demandes ?', 'Comment demander un congé ?'], DEF: ['Quelles tâches m’attendent ?', 'Combien d’agents au ministère de la Santé ?', 'Montre le bulletin de paie de NAMKOÏ Sylvie', 'Simule la retraite de l’agent 192-1208-B'] };
   const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').split('\n').map(l => /^\s*[-•*] /.test(l) ? `<span class="cb-li">${l.replace(/^\s*[-•*] /, '')}</span>` : l.trim() ? `<span class="cb-p">${l}</span>` : '<span class="cb-gap"></span>').join('');
+  const hello = () => { const h = new Date().getHours(); return h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir'; };
+  const firstName = () => {
+    const p = String(me().name || '').replace(/·.*$/, '').trim().split(/\s+/).filter(w => !/^(m|mme|mlle|dr|pr)\.?$/i.test(w));
+    if (!p.length) return 'cher agent';
+    const w = p[0].length > 1 && p[0] === p[0].toUpperCase() && p[1] ? p[1] : p[0];
+    return w[0].toUpperCase() + w.slice(1).toLowerCase();
+  };
   function conv() { const u = me(); return chats[u.login] || (chats[u.login] = []); }
   function build() {
     root = document.createElement('div'); root.id = 'cb-root';
     root.innerHTML = `<button type="button" class="cb-fab" aria-expanded="false" aria-controls="cb-panel" title="Assistant RH"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg><span>Assistant RH</span></button>
       <section class="cb-panel" id="cb-panel" role="dialog" aria-label="Assistant RH" hidden>
-        <header class="cb-head"><div class="cb-id"><span class="cb-ava"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></span><div><b>Assistant RH</b><span class="cb-mode"></span></div></div><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm cb-clear">Effacer</button><button type="button" class="btn sm cb-maxbtn" aria-label="Agrandir ou réduire la fenêtre"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button><button type="button" class="btn sm cb-close" aria-label="Fermer l’assistant">✕</button></span></header>
+        <header class="cb-head"><div class="cb-id"><span class="cb-ava"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></span><div><b>Sango</b><span class="cb-mode"></span></div></div><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm cb-clear">Effacer</button><button type="button" class="btn sm cb-maxbtn" aria-label="Agrandir ou réduire la fenêtre"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button><button type="button" class="btn sm cb-close" aria-label="Fermer l’assistant">✕</button></span></header>
         <div class="cb-log" aria-live="polite"></div>
         <div class="cb-sug"></div>
         <form class="cb-form"><label for="cb-in" class="cb-sr">Votre question</label><textarea id="cb-in" rows="1" placeholder="Posez une question RH…"></textarea><button type="submit" class="btn p cb-send">Envoyer</button></form>
@@ -240,7 +248,7 @@ Règles :
   function paint() {
     if (!root || !me()) return;
     const L = conv(), log = root.querySelector('.cb-log');
-    log.innerHTML = (L.length ? '' : `<div class="cb-msg bot">Bonjour ${esc(me().name.split(' ').slice(-1)[0])}. Je réponds à vos questions RH à partir des données du SIGRHE, dans la limite de vos droits.</div>`) + L.map(m => `<div class="cb-msg ${m.role === 'user' ? 'me' : 'bot'}${m.err ? ' err' : ''}">${m.role === 'user' ? esc(m.content) : (m.content ? md(m.content) : '<span class="cb-dots">Réflexion en cours…</span>')}${m.tools ? `<span class="cb-tools">${esc(m.tools)}</span>` : ''}</div>`).join('');
+    log.innerHTML = (L.length ? '' : `<div class="cb-msg bot">${hello()} ${esc(firstName())} 👋 Je suis <b>Sango</b>, votre assistant RH — toujours de bonne humeur et à votre service. Posez-moi une question sur vos dossiers, la paie, les pensions ou les procédures.</div>`) + L.map(m => `<div class="cb-msg ${m.role === 'user' ? 'me' : 'bot'}${m.err ? ' err' : ''}">${m.role === 'user' ? esc(m.content) : (m.content ? md(m.content) : '<span class="cb-dots">Réflexion en cours…</span>')}${m.tools ? `<span class="cb-tools">${esc(m.tools)}</span>` : ''}</div>`).join('');
     log.scrollTop = log.scrollHeight;
     root.querySelector('.cb-sug').innerHTML = L.length > 2 ? '' : (SUG[me().prof] || SUG.DEF).map(s => `<button type="button" data-q="${esc(s)}">${esc(s)}</button>`).join('');
     const send = root.querySelector('.cb-send'); send.textContent = busy ? 'Arrêter' : 'Envoyer';
@@ -270,6 +278,23 @@ Règles :
     busy = false; paint();
   }
 
+  /* Petite bulle d'accueil de Sango : une fois par session, peu après la connexion */
+  let teaserDone = false;
+  function maybeTeaser() {
+    if (teaserDone || !me() || !root) return;
+    teaserDone = true;
+    setTimeout(() => {
+      const p = root && root.querySelector('.cb-panel'), f = root && root.querySelector('.cb-fab');
+      if (!root || (p && !p.hidden) || !f) return;
+      const t = document.createElement('div');
+      t.className = 'cb-teaser';
+      t.innerHTML = hello() + ' ' + esc(firstName()) + ' 👋 Je suis <b>Sango</b>, votre assistant RH — une question ?';
+      t.addEventListener('click', () => { t.remove(); f.click(); });
+      root.appendChild(t);
+      setTimeout(() => { t.classList.add('off'); setTimeout(() => t.remove(), 420); }, 9500);
+    }, 1600);
+  }
+
   /* Affiché seulement une fois connecté ; suit les changements de profil */
   function sync() {
     if (!root) build();
@@ -277,6 +302,7 @@ Règles :
     root.hidden = !on; document.body.classList.toggle('has-cb', on); document.body.classList.toggle('cb-agt', on && isAgt());
     if (!on) { const p = root.querySelector('.cb-panel'); p.classList.remove('cb-in'); p.hidden = true; document.body.classList.remove('cb-open'); }
     else if (root.dataset.login !== me().login) { root.dataset.login = me().login; if (ctl) ctl.abort(); paint(); }
+    if (on) maybeTeaser();
   }
   const obs = () => { const app = document.getElementById('app'); if (!app) return setTimeout(obs, 50); new MutationObserver(sync).observe(app, { childList: true }); sync(); };
   obs();

@@ -149,24 +149,94 @@ Règles :
     root = document.createElement('div'); root.id = 'cb-root';
     root.innerHTML = `<button type="button" class="cb-fab" aria-expanded="false" aria-controls="cb-panel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg><span>Assistant RH</span></button>
       <section class="cb-panel" id="cb-panel" role="dialog" aria-label="Assistant RH" hidden>
-        <header class="cb-head"><div><b>Assistant RH</b><span class="cb-mode"></span></div><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm cb-clear">Effacer</button><button type="button" class="btn sm cb-close" aria-label="Fermer l’assistant">✕</button></span></header>
+        <header class="cb-head"><div class="cb-id"><span class="cb-ava"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></span><div><b>Assistant RH</b><span class="cb-mode"></span></div></div><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm cb-clear">Effacer</button><button type="button" class="btn sm cb-maxbtn" aria-label="Agrandir ou réduire la fenêtre"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button><button type="button" class="btn sm cb-close" aria-label="Fermer l’assistant">✕</button></span></header>
         <div class="cb-log" aria-live="polite"></div>
         <div class="cb-sug"></div>
         <form class="cb-form"><label for="cb-in" class="cb-sr">Votre question</label><textarea id="cb-in" rows="1" placeholder="Posez une question RH…"></textarea><button type="submit" class="btn p cb-send">Envoyer</button></form>
         <p class="cb-foot">Réponses générées par l’IA à partir des données du SIGRHE, limitées à vos droits. Chaque consultation est journalisée.</p>
       </section>`;
     document.body.appendChild(root);
-    const panel = root.querySelector('.cb-panel'), fab = root.querySelector('.cb-fab'), input = root.querySelector('#cb-in');
-    const open = v => { panel.hidden = !v; fab.setAttribute('aria-expanded', String(v)); document.body.classList.toggle('cb-open', v); if (v) { paint(); input.focus(); } else fab.focus(); };
+    const panel = root.querySelector('.cb-panel'), fab = root.querySelector('.cb-fab'), input = root.querySelector('#cb-in'), head = root.querySelector('.cb-head'), maxBtn = root.querySelector('.cb-maxbtn');
+    const grip = document.createElement('span'); grip.className = 'cb-grip'; grip.setAttribute('aria-hidden', 'true'); panel.appendChild(grip);
+
+    /* ---------- Fenêtre flottante : position, taille, agrandissement ---------- */
+    let pos = null, size = null, maxed = false, closeTimer = null;
+    const anchor = () => { const r = panel.getBoundingClientRect(); panel.style.left = r.left + 'px'; panel.style.top = r.top + 'px'; panel.style.right = 'auto'; panel.style.bottom = 'auto'; };
+    const restore = () => { if (pos) { panel.style.left = pos.x + 'px'; panel.style.top = pos.y + 'px'; panel.style.right = 'auto'; panel.style.bottom = 'auto'; } if (size) { panel.style.width = size.w + 'px'; panel.style.height = size.h + 'px'; } };
+    const MAX_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+    const MIN_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+    const setMax = v => { maxed = v; panel.classList.toggle('cb-max', v); maxBtn.innerHTML = v ? MIN_SVG : MAX_SVG; };
+
+    const open = v => {
+      clearTimeout(closeTimer);
+      if (v) { panel.hidden = false; restore(); requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('cb-in'))); paint(); input.focus(); }
+      else { panel.classList.remove('cb-in'); closeTimer = setTimeout(() => { panel.hidden = true; }, 180); fab.focus(); }
+      fab.setAttribute('aria-expanded', String(v)); document.body.classList.toggle('cb-open', v);
+    };
     fab.addEventListener('click', () => open(panel.hidden));
     root.querySelector('.cb-close').addEventListener('click', () => open(false));
     root.querySelector('.cb-clear').addEventListener('click', () => { if (ctl) ctl.abort(); chats[me().login] = []; paint(); });
+    maxBtn.addEventListener('click', () => setMax(!maxed));
     panel.addEventListener('keydown', e => { if (e.key === 'Escape') open(false); });
     input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); root.querySelector('.cb-form').requestSubmit(); } });
     root.querySelector('.cb-form').addEventListener('submit', e => { e.preventDefault(); if (busy) { if (ctl) ctl.abort(); return; } const q = input.value.trim(); if (q) { input.value = ''; ask(q); } });
     root.querySelector('.cb-sug').addEventListener('click', e => { const b = e.target.closest('button[data-q]'); if (b && !busy) ask(b.dataset.q); });
+
+    /* Déplacement : glisser la barre de titre (désactivé sur petit écran, où le panneau est plein écran) */
+    let drag = null;
+    head.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || e.target.closest('button') || window.innerWidth < 640) return;
+      if (maxed) setMax(false);
+      anchor();
+      const r = panel.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+      panel.classList.add('dragging');
+      head.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    head.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const w = panel.offsetWidth, h = panel.offsetHeight;
+      pos = {
+        x: Math.min(Math.max(e.clientX - drag.dx, 24 - w), window.innerWidth - 48),
+        y: Math.min(Math.max(e.clientY - drag.dy, 0), window.innerHeight - 48)
+      };
+      panel.style.left = pos.x + 'px'; panel.style.top = pos.y + 'px';
+    });
+    const endDrag = () => { drag = null; panel.classList.remove('dragging'); };
+    head.addEventListener('pointerup', endDrag);
+    head.addEventListener('pointercancel', endDrag);
+    head.addEventListener('dblclick', e => { if (!e.target.closest('button') && window.innerWidth >= 640) setMax(!maxed); });
+
+    /* Redimensionnement : poignée en bas à droite */
+    let rz = null;
+    grip.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      if (maxed) setMax(false);
+      anchor();
+      const r = panel.getBoundingClientRect();
+      rz = { x: e.clientX, y: e.clientY, w: r.width, h: r.height };
+      grip.setPointerCapture(e.pointerId);
+      panel.classList.add('dragging');
+      e.preventDefault();
+    });
+    grip.addEventListener('pointermove', e => {
+      if (!rz) return;
+      size = { w: Math.min(Math.max(rz.w + e.clientX - rz.x, 300), window.innerWidth - 16), h: Math.min(Math.max(rz.h + e.clientY - rz.y, 340), window.innerHeight - 16) };
+      panel.style.width = size.w + 'px'; panel.style.height = size.h + 'px';
+      pos = { x: panel.offsetLeft, y: panel.offsetTop };
+    });
+    const endRz = () => { rz = null; panel.classList.remove('dragging'); };
+    grip.addEventListener('pointerup', endRz);
+    grip.addEventListener('pointercancel', endRz);
   }
-  function paintHeader() { if (!root) return; const m = root.querySelector('.cb-mode'); m.textContent = aiState === 'ready' ? ' · IA connectée' : aiState === 'offline' ? ' · mode guidé' : aiState === 'denied' ? ' · mode guidé (IA non autorisée)' : ''; }
+  function paintHeader() {
+    if (!root) return; const m = root.querySelector('.cb-mode');
+    m.innerHTML = aiState === 'ready' ? '<span class="cb-dot"></span>IA connectée'
+      : aiState === 'pending' ? 'Connexion…'
+      : aiState === 'denied' ? '<span class="cb-dot off"></span>Mode guidé (IA non autorisée)'
+      : '<span class="cb-dot off"></span>Mode guidé';
+  }
   function paint() {
     if (!root || !me()) return;
     const L = conv(), log = root.querySelector('.cb-log');
@@ -205,7 +275,7 @@ Règles :
     if (!root) build();
     const on = !!me();
     root.hidden = !on; document.body.classList.toggle('has-cb', on); document.body.classList.toggle('cb-agt', on && isAgt());
-    if (!on) { const p = root.querySelector('.cb-panel'); p.hidden = true; document.body.classList.remove('cb-open'); }
+    if (!on) { const p = root.querySelector('.cb-panel'); p.classList.remove('cb-in'); p.hidden = true; document.body.classList.remove('cb-open'); }
     else if (root.dataset.login !== me().login) { root.dataset.login = me().login; if (ctl) ctl.abort(); paint(); }
   }
   const obs = () => { const app = document.getElementById('app'); if (!app) return setTimeout(obs, 50); new MutationObserver(sync).observe(app, { childList: true }); sync(); };

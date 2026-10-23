@@ -21,7 +21,7 @@ for s in scripts + ['server.js']:
 # référentiel : tout DATA sauf les agents, comptes et journal de démonstration
 ref = subprocess.run(['node', '-e', "const fs=require('fs');eval(fs.readFileSync(process.argv[1],'utf8').replace('const DATA','global.DATA'));"
                       "process.stdout.write(JSON.stringify({E:DATA.E,P:DATA.P,R:DATA.R,BASE:DATA.BASE,main:DATA.main}))", str(SRC / 'data.js')],
-                     capture_output=True, text=True, check=True).stdout
+                     capture_output=True, encoding='utf-8', check=True).stdout
 d = json.loads(ref); d.update({'A': [], 'users': [], 'log': []})
 (ST / 'data-ref.js').write_text('const DATA=' + json.dumps(d, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')
 

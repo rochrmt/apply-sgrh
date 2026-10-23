@@ -11,4 +11,5 @@ max_requests = 2000
 max_requests_jitter = 200
 accesslog = '-'
 errorlog = '-'
+control_socket = '/tmp/gunicorn.ctl'   # /app n'est pas inscriptible pour l'utilisateur applicatif
 forwarded_allow_ips = '*'

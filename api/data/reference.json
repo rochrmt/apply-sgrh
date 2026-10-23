@@ -1,0 +1,650 @@
+{
+ "P": [
+  [
+   "ADM",
+   "Administrateur système",
+   "Admin. système",
+   "Plateforme (aucune donnée nominative)",
+   "Gère les comptes, les paramètres techniques et la sécurité. N’accède pas aux dossiers des agents ni à la paie."
+  ],
+  [
+   "DRH",
+   "DRH centrale (Fonction publique)",
+   "DRH centrale",
+   "Tous ministères",
+   "Valide les actes RH, pilote les campagnes d’évaluation et de recrutement sur l’ensemble de l’État."
+  ],
+  [
+   "GRH",
+   "Gestionnaire RH sectoriel",
+   "Gest. RH sectoriel",
+   "Son ministère uniquement",
+   "Saisit et met à jour les dossiers des agents de son ministère et propose les actes."
+  ],
+  [
+   "SOL",
+   "Gestionnaire de la solde",
+   "Gest. solde",
+   "Tous ministères (paie)",
+   "Prépare et calcule la paie, traite les anomalies. Ne peut pas valider ni ordonnancer."
+  ],
+  [
+   "CF",
+   "Contrôleur financier",
+   "Contrôleur financier",
+   "Tous ministères",
+   "Vise les actes à incidence financière et la paie avant ordonnancement."
+  ],
+  [
+   "ORD",
+   "Ordonnateur (DG Budget)",
+   "Ordonnateur",
+   "Tous ministères",
+   "Valide les créations de postes et ordonnance la paie (signature PKI)."
+  ],
+  [
+   "CON",
+   "Président de commission de concours",
+   "Commission concours",
+   "Concours qu’il préside",
+   "Accède aux candidatures et arrête les listes de résultats de son concours."
+  ],
+  [
+   "AUD",
+   "Auditeur (Cour des comptes, Inspection)",
+   "Auditeur",
+   "Tous (lecture seule)",
+   "Consulte toutes les données et la piste d’audit, sans aucune modification possible."
+  ],
+  [
+   "DEC",
+   "Décideur (Cabinet, Ministre)",
+   "Décideur",
+   "Agrégats de son ministère",
+   "Consulte les tableaux de bord et les simulations ; aucune donnée individuelle."
+  ],
+  [
+   "AGT",
+   "Agent public (portail)",
+   "Agent (portail)",
+   "Ses propres données",
+   "Consulte son dossier et ses bulletins, dépose des demandes."
+  ]
+ ],
+ "R": [
+  "Répertoire et organigrammes",
+  "Postes et emplois",
+  "Dossiers des agents",
+  "Carrière · proposition d’actes",
+  "Carrière · visa financier",
+  "Évaluation",
+  "Formation",
+  "Temps et présences",
+  "Discipline",
+  "Recrutement et concours",
+  "Paie · préparation et calcul",
+  "Paie · validation et ordonnancement",
+  "Pensions",
+  "Tableaux de bord et simulation",
+  "Piste d’audit",
+  "Utilisateurs et droits"
+ ],
+ "BASE": [
+  [
+   1,
+   3,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   0
+  ],
+  [
+   1,
+   2,
+   2,
+   1,
+   1,
+   3,
+   1,
+   1,
+   1,
+   0
+  ],
+  [
+   0,
+   3,
+   2,
+   1,
+   1,
+   0,
+   0,
+   1,
+   0,
+   1
+  ],
+  [
+   0,
+   3,
+   2,
+   0,
+   1,
+   0,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   3,
+   0,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   3,
+   2,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   1
+  ],
+  [
+   0,
+   3,
+   2,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   1
+  ],
+  [
+   0,
+   1,
+   2,
+   1,
+   0,
+   0,
+   0,
+   1,
+   0,
+   1
+  ],
+  [
+   0,
+   3,
+   1,
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   3,
+   1,
+   0,
+   0,
+   0,
+   3,
+   1,
+   1,
+   0
+  ],
+  [
+   0,
+   1,
+   1,
+   2,
+   1,
+   0,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   3,
+   3,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   2,
+   1,
+   2,
+   3,
+   1,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   0
+  ],
+  [
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0
+  ],
+  [
+   4,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0
+  ]
+ ],
+ "E": [
+  [
+   "01",
+   "MJDHBG",
+   "Ministère d’État chargé de la Justice, de la Promotion des Droits Humains et de la Bonne Gouvernance, Garde des Sceaux",
+   "Justice, Droits humains et Bonne gouvernance",
+   "etat",
+   520
+  ],
+  [
+   "02",
+   "MEN",
+   "Ministère d’État chargé de l’Éducation Nationale",
+   "Éducation nationale",
+   "etat",
+   9420
+  ],
+  [
+   "03",
+   "METP",
+   "Ministère d’État chargé de l’Équipement et des Travaux Publics",
+   "Équipement et Travaux publics",
+   "etat",
+   145
+  ],
+  [
+   "04",
+   "MCM",
+   "Ministère d’État chargé de la Communication et des Médias",
+   "Communication et Médias",
+   "etat",
+   118
+  ],
+  [
+   "05",
+   "MTAC",
+   "Ministère des Transports et de l’Aviation Civile",
+   "Transports et Aviation civile",
+   "min",
+   74
+  ],
+  [
+   "06",
+   "MDNRA",
+   "Ministère de la Défense Nationale et de la Reconstruction de l’Armée",
+   "Défense nationale et Reconstruction de l’Armée",
+   "min",
+   3610
+  ],
+  [
+   "07",
+   "MMG",
+   "Ministère des Mines et de la Géologie",
+   "Mines et Géologie",
+   "min",
+   96
+  ],
+  [
+   "08",
+   "MFB",
+   "Ministère des Finances et du Budget",
+   "Finances et Budget",
+   "min",
+   1315
+  ],
+  [
+   "09",
+   "MAHSRN",
+   "Ministère de l’Action Humanitaire, de la Solidarité et de la Réconciliation Nationale",
+   "Action humanitaire, Solidarité et Réconciliation",
+   "min",
+   62
+  ],
+  [
+   "10",
+   "MAEFCE",
+   "Ministère des Affaires Étrangères, de la Francophonie et des Centrafricains de l’Étranger",
+   "Affaires étrangères, Francophonie et Centrafricains de l’étranger",
+   "min",
+   205
+  ],
+  [
+   "11",
+   "MATDDL",
+   "Ministère de l’Administration du Territoire, de la Décentralisation et du Développement Local",
+   "Administration du territoire, Décentralisation et Développement local",
+   "min",
+   310
+  ],
+  [
+   "12",
+   "MSGGRI",
+   "Ministère du Secrétariat Général du Gouvernement et des Relations avec les Institutions de la République",
+   "Secrétariat général du Gouvernement et Relations avec les Institutions",
+   "min",
+   48
+  ],
+  [
+   "13",
+   "MPMEPSP",
+   "Ministère des Petites et Moyennes Entreprises et de la Promotion du Secteur Privé",
+   "PME et Promotion du secteur privé",
+   "min",
+   41
+  ],
+  [
+   "14",
+   "MSP",
+   "Ministère de la Santé et de la Population",
+   "Santé et Population",
+   "min",
+   4185
+  ],
+  [
+   "15",
+   "MCI",
+   "Ministère du Commerce et de l’Industrie",
+   "Commerce et Industrie",
+   "min",
+   88
+  ],
+  [
+   "16",
+   "MEFRFA",
+   "Ministère de l’Économie Forestière, des Ressources Fauniques et Aquatiques",
+   "Économie forestière, Ressources fauniques et aquatiques",
+   "min",
+   164
+  ],
+  [
+   "17",
+   "MFPRA",
+   "Ministère de la Fonction Publique et de la Réforme Administrative",
+   "Fonction publique et Réforme administrative",
+   "min",
+   132
+  ],
+  [
+   "18",
+   "MESRSIT",
+   "Ministère de l’Enseignement Supérieur, de la Recherche Scientifique et de l’Innovation Technologique",
+   "Enseignement supérieur, Recherche et Innovation",
+   "min",
+   212
+  ],
+  [
+   "19",
+   "MPGPFFE",
+   "Ministère de la Promotion du Genre, de la Protection de la Femme, de la Famille et de l’Enfant",
+   "Genre, Protection de la Femme, de la Famille et de l’Enfant",
+   "min",
+   79
+  ],
+  [
+   "20",
+   "MPJSEC",
+   "Ministère de la Promotion de la Jeunesse, des Sports et de l’Éducation Civique",
+   "Jeunesse, Sports et Éducation civique",
+   "min",
+   96
+  ],
+  [
+   "21",
+   "MURFVH",
+   "Ministère de l’Urbanisme, de la Réforme Foncière, de la Ville et de l’Habitat",
+   "Urbanisme, Réforme foncière, Ville et Habitat",
+   "min",
+   71
+  ],
+  [
+   "22",
+   "MTEPSFP",
+   "Ministère du Travail, de l’Emploi, de la Protection Sociale et de la Formation Professionnelle",
+   "Travail, Emploi, Protection sociale et Formation professionnelle",
+   "min",
+   104
+  ],
+  [
+   "23",
+   "MDERH",
+   "Ministère du Développement de l’Énergie et des Ressources Hydrauliques",
+   "Énergie et Ressources hydrauliques",
+   "min",
+   58
+  ],
+  [
+   "24",
+   "MEPCI",
+   "Ministère de l’Économie, du Plan et de la Coopération Internationale",
+   "Économie, Plan et Coopération internationale",
+   "min",
+   93
+  ],
+  [
+   "25",
+   "MISP",
+   "Ministère de l’Intérieur et de la Sécurité Publique",
+   "Intérieur et Sécurité publique",
+   "min",
+   2240
+  ],
+  [
+   "26",
+   "MADR",
+   "Ministère de l’Agriculture et du Développement Rural",
+   "Agriculture et Développement rural",
+   "min",
+   980
+  ],
+  [
+   "26.1",
+   "MD-ADR",
+   "Ministre Délégué auprès du Ministre de l’Agriculture et du Développement Rural",
+   "Délégation · Agriculture et Développement rural",
+   "del",
+   0,
+   "26"
+  ],
+  [
+   "27",
+   "MEDD",
+   "Ministère de l’Environnement et du Développement Durable",
+   "Environnement et Développement durable",
+   "min",
+   52
+  ],
+  [
+   "28",
+   "MDDRR",
+   "Ministère du Désarmement, de la Démobilisation, de la Réintégration, du Rapatriement et du Suivi de l’Accord Politique pour la Paix et la Réconciliation et de l’Accord de N’Djamena",
+   "Désarmement, Démobilisation, Réintégration, Rapatriement (DDRR)",
+   "min",
+   36
+  ],
+  [
+   "28.1",
+   "MD-DDRR",
+   "Ministre Délégué auprès du Ministre chargé du Désarmement, de la Démobilisation, de la Réinsertion, du Rapatriement et du Suivi de l’Accord",
+   "Délégation · DDRR",
+   "del",
+   0,
+   "28"
+  ],
+  [
+   "29",
+   "MENPT",
+   "Ministère de l’Économie Numérique, des Postes et Télécommunications",
+   "Économie numérique, Postes et Télécommunications",
+   "min",
+   61
+  ],
+  [
+   "30",
+   "MESA",
+   "Ministère de l’Élevage et de la Santé Animale",
+   "Élevage et Santé animale",
+   "min",
+   118
+  ],
+  [
+   "31",
+   "MACT",
+   "Ministère des Arts, de la Culture et du Tourisme",
+   "Arts, Culture et Tourisme",
+   "min",
+   54
+  ],
+  [
+   "I01",
+   "PR",
+   "Présidence de la République",
+   "Présidence de la République",
+   "inst",
+   14
+  ],
+  [
+   "I02",
+   "PRIM",
+   "Primature",
+   "Primature",
+   "inst",
+   11
+  ],
+  [
+   "I03",
+   "AN",
+   "Assemblée Nationale",
+   "Assemblée nationale",
+   "inst",
+   0
+  ],
+  [
+   "I04",
+   "SEN",
+   "Sénat",
+   "Sénat",
+   "inst",
+   0
+  ],
+  [
+   "I05",
+   "CC",
+   "Cour Constitutionnelle",
+   "Cour constitutionnelle",
+   "inst",
+   0
+  ],
+  [
+   "I06",
+   "CCASS",
+   "Cour de Cassation",
+   "Cour de cassation",
+   "inst",
+   0
+  ],
+  [
+   "I07",
+   "CE",
+   "Conseil d’État",
+   "Conseil d’État",
+   "inst",
+   0
+  ],
+  [
+   "I08",
+   "CDC",
+   "Cour des Comptes",
+   "Cour des comptes",
+   "inst",
+   0
+  ],
+  [
+   "I09",
+   "CESE",
+   "Conseil Économique, Social et Environnemental",
+   "Conseil économique, social et environnemental",
+   "inst",
+   0
+  ],
+  [
+   "I10",
+   "HCC",
+   "Haut Conseil de la Communication",
+   "Haut Conseil de la Communication",
+   "inst",
+   0
+  ],
+  [
+   "I11",
+   "ANE",
+   "Autorité Nationale des Élections",
+   "Autorité nationale des élections",
+   "inst",
+   0
+  ],
+  [
+   "I12",
+   "MED",
+   "Médiateur de la République",
+   "Médiateur de la République",
+   "inst",
+   0
+  ]
+ ]
+}

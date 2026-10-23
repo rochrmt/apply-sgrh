@@ -1,0 +1,19 @@
+# SIGRHE · service systemd (installation sans Docker) : /etc/systemd/system/sigrhe.service
+[Unit]
+Description=SIGRHE (Django + Gunicorn)
+After=network.target postgresql.service
+
+[Service]
+User=sigrhe
+Group=sigrhe
+WorkingDirectory=/opt/sigrhe
+EnvironmentFile=/opt/sigrhe/.env
+ExecStart=/opt/sigrhe/venv/bin/gunicorn sigrhe.wsgi:application -c /opt/sigrhe/deploy/gunicorn.conf.py --bind 127.0.0.1:8000
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,54 @@
+# SIGRHE · déploiement complet : PostgreSQL + application + Nginx (HTTPS)
+# Démarrage : cp .env.example .env  (puis compléter)  &&  docker compose up -d --build
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sigrhe}
+      POSTGRES_USER: ${POSTGRES_USER:-sigrhe}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sigrhe} -d ${POSTGRES_DB:-sigrhe}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-sigrhe}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-sigrhe}
+      MEDIA_ROOT: /app/media
+    volumes:
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    # Application accessible en HTTP local sur http://localhost:8000 sans le proxy TLS
+    # (changer le port hôte via SIGRHE_PORT dans .env si 8000 est déjà pris)
+    ports:
+      - "127.0.0.1:${SIGRHE_PORT:-8000}:8000"
+
+  # Proxy TLS (production) : démarrer avec « docker compose --profile https up -d »
+  # après avoir déposé deploy/certs/fullchain.pem et deploy/certs/privkey.pem.
+  nginx:
+    image: nginx:1.27-alpine
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on: [web]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/certs:/etc/nginx/certs:ro
+      - certbot-www:/var/www/certbot:ro
+
+volumes:
+  pgdata:
+  media:
+  certbot-www:
